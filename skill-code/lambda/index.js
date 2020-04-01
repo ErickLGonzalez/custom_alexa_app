@@ -1,6 +1,6 @@
 // Alexa custom skill app index.js
 // Alexa Skills Kit SDK (v2).
-// RSS Parser https://www.npmjs.com/package/rss-parser
+// RSS Parser https://github.com/rbren/rss-parser
 
 // Modules Definition
 
