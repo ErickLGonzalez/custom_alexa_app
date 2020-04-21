@@ -42,6 +42,69 @@ const speechText = '<prosody pitch="high">Welcome to Stars and Stripes <emphasis
   },
 };
 
+// Podcast 
+
+const STREAMS = [
+  {
+    "token": "1",
+    "url": 'https://stripes.com/podcastlink',
+    "metadata" : {
+      "title": "Stream One",
+      "subtitle": "A subtitle for stream one",
+      "art": {
+        "sources": [
+          {
+            "contentDescription": "example image",
+            "url": "https://stripes.com/audiostream-starter-512x512.png",
+            "widthPixels": 512,
+            "heightPixels": 512
+          }
+        ]
+      },
+      "backgroundImage": {
+        "sources": [
+          {
+            "contentDescription": "example image",
+            "url": "https://stripes.com/wayfarer-on-beach-1200x800.png",
+            "widthPixels": 1200,
+            "heightPixels": 800
+          }
+        ]
+      }
+    }
+  }
+];
+
+const PlayStreamIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'LaunchRequest' ||
+      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+        (
+          handlerInput.requestEnvelope.request.intent.name === 'PlayStreamIntent' ||
+          handlerInput.requestEnvelope.request.intent.name === 'AMAZON.ResumeIntent' ||
+          handlerInput.requestEnvelope.request.intent.name === 'AMAZON.LoopOnIntent' ||
+          handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NextIntent' ||
+          handlerInput.requestEnvelope.request.intent.name === 'AMAZON.PreviousIntent' ||
+          handlerInput.requestEnvelope.request.intent.name === 'AMAZON.RepeatIntent' ||
+          handlerInput.requestEnvelope.request.intent.name === 'AMAZON.ShuffleOnIntent' ||
+          handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StartOverIntent'
+      );
+  },
+  handle(handlerInput) {
+
+    let stream = STREAMS[0];
+
+    handlerInput.responseBuilder
+      .speak(`starting ${stream.metadata.title}`)
+      .addAudioPlayerPlayDirective('REPLACE_ALL', stream.url, stream.token, 0, null, stream.metadata);
+
+    return handlerInput.responseBuilder
+      .getResponse();
+  },
+};
+
+
+
 const HelpIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
